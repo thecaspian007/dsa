@@ -1,30 +1,32 @@
 class Solution {
 public:
-     void dfs(vector<vector<int>>&graph,vector<vector<int>>& paths,vector<int>path,int start,int destination){
-
+    void dfs(vector<vector<int>>& graph, vector<vector<int>>&ans,  vector<int>path, int start, int dest)
+    {
         path.push_back(start);
-        // Base condtion if start == destination.
-        if(start == destination){
-            paths.push_back(path);
+        if(start == dest)
+        {
+            ans.push_back(path);
             return;
         }
-        // traversal in dfs (adjacency list is already given)
-        for(auto x:graph[start]){
-            dfs(graph,paths,path,x,destination);
+
+        for(auto x: graph[start])
+        {
+            dfs(graph, ans, path, x,dest);
         }
+        
     }
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
-        // 2D vector to store the paths.
-        vector<vector<int>> paths;
-        // to store the path
+        vector<vector<int>>ans;
         vector<int>path;
-        int nodes = graph.size();
 
-        if(nodes == 0) return paths;
+        int v= graph.size();
 
-        // track paths using dfs traversal
-        dfs(graph,paths,path,0,nodes-1);
+        if(v == 0)
+        {
+            return ans;
+        }
 
-        return paths;
+        dfs(graph, ans, path, 0, v-1);
+        return ans;
     }
 };
