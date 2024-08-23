@@ -18,11 +18,6 @@ public:
         for(int i = 0; i<len1; i++)
         {
             mp[ransomNote[i]]--;
-        }
-        int count = 0;
-        for(int i = 0; i< len1; i++)
-        {
-            
             if(mp[ransomNote[i]] >=0)
             {
                 continue;
