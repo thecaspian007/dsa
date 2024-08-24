@@ -7,8 +7,9 @@ public:
         return false;
        }
         string t;
-       for(auto a: s)
+       for(int i = 0; i< len; i++)
        {
+        char a = s[i];
         if(a >= 'A' && a<= 'Z')
         {
             t.push_back(a-'A'+'a');
