@@ -2,7 +2,6 @@ class Solution {
 public:
     bool containsNearbyDuplicate(vector<int>& nums, int k) {
         int len = nums.size();
-        map<int, int>mp;
         map<int, vector<int>>np;
 
         if(len == 0)
