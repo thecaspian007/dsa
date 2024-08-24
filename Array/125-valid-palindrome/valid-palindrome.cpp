@@ -7,7 +7,7 @@ public:
         return false;
        }
         string t;
-       for(auto const &a: s)
+       for(auto a: s)
        {
         if(a >= 'A' && a<= 'Z')
         {
