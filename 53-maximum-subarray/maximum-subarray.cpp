@@ -15,7 +15,10 @@ public:
        {
         current_val += nums[i];
         max_so_far = max(max_so_far, current_val);
-        current_val = max(initial_val, current_val);
+        if (current_val <0)
+        {
+            current_val=0;
+        }
        }
        return max_so_far;
     }
