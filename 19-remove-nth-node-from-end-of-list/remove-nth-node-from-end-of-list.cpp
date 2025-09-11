@@ -15,7 +15,7 @@ public:
     {
         return head;
     }
-    ListNode* dummy = new ListNode(0);
+    ListNode* dummy = new ListNode();
     dummy->next = head;
     ListNode* fast = dummy;
     ListNode* slow = dummy;
