@@ -15,9 +15,9 @@ public:
             return head;
         }
 
-        ListNode dummy(0);
-        dummy.next = head;
-        ListNode * current = &dummy;
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode * current = dummy;
 
         while(current ->next != nullptr){
             if(current->next->val == val){
@@ -27,6 +27,6 @@ public:
                 current = current->next;
             }
         }
-        return dummy.next;
+        return dummy->next;
     }
 };
