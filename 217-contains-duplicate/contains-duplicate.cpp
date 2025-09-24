@@ -9,7 +9,7 @@ public:
         for(int i = 0; i< len; i++){
             mp[nums[i]]++;
         }
-        for(auto it: mp){
+        for(auto &it: mp){
             if(it.second>1){
                 return true;
             }
