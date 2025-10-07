@@ -16,12 +16,10 @@ public:
             if(cursor == nullptr) return head;
             cursor = cursor->next;
         }
-
         ListNode* current = head;
         ListNode* prev = nullptr;
         ListNode* forward = nullptr;
         int count = 0;
-
         while(current != nullptr && count<k)
         {
             forward = current->next;
@@ -30,7 +28,6 @@ public:
             current = forward;
             count++;
         }
-
         if(forward != NULL)
         {
             head->next = reverseKGroup(forward, k);
