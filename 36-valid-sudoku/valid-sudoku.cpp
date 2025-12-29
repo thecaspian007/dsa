@@ -1,29 +1,19 @@
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
-         unordered_set<char> rows[9];
-        unordered_set<char> cols[9];
-        unordered_set<char> boxes[9];
-
-        for (int r = 0; r < 9; ++r) {
-            for (int c = 0; c < 9; ++c) {
-                if (board[r][c] == '.') {
-                    continue;
-                }
-
-                char value = board[r][c];
-                int boxIndex = (r / 3) * 3 + (c / 3);
-
-                if (rows[r].count(value) || cols[c].count(value) || boxes[boxIndex].count(value)) {
+        vector<unordered_set<char>> rows(9), cols(9), boxes(9);
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                char c = board[i][j];
+                if(c == '.') continue;
+                int box = (i / 3) * 3 + (j / 3);
+                if(rows[i].count(c) || cols[j].count(c) || boxes[box].count(c))
                     return false;
-                }
-
-                rows[r].insert(value);
-                cols[c].insert(value);
-                boxes[boxIndex].insert(value);
+                rows[i].insert(c);
+                cols[j].insert(c);
+                boxes[box].insert(c);
             }
         }
-
-        return true;    
+        return true;
     }
 };
