@@ -1,35 +1,35 @@
 class Solution {
 public:
-    void numOfIslands(vector<vector<char>>& grid,vector<vector<int>> &vis,int i,int j,int n,int m)
-    {
-        if(i<0 || i>=n || j<0 || j>=m || grid[i][j]=='0' || vis[i][j]==1) return ;
-
-        vis[i][j]=1;
-
-        numOfIslands(grid,vis,i+1,j,n,m);
-        numOfIslands(grid,vis,i-1,j,n,m);
-        numOfIslands(grid,vis,i,j+1,n,m);
-        numOfIslands(grid,vis,i,j-1,n,m);
+    void dfs(int i, int j, vector<vector<char>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        if(i<0 || i>=n || j<0 || j>=m || grid[i][j] == '0') {
+            return;
+        }
+        grid[i][j] = '0';
+        dfs(i+1, j, grid);
+        dfs(i-1, j, grid);
+        dfs(i, j+1, grid);
+        dfs(i, j-1, grid);
     }
 
     int numIslands(vector<vector<char>>& grid) {
-      int n = grid.size();
-      int m = grid[0].size();
-      int count = 0;
-      vector<vector<int>> vis(n, vector<int>(m, 0));
-      
-      for(int i =0; i<n; i++)
-      {
-          for(int j =0; j<m; j++)
-          {
-              if(grid[i][j] == '1'  && !vis[i][j])
-              {
-                count++;
-                numOfIslands(grid, vis, i, j, n, m);
-              }
-              
-          }
-      }
-      return count;
+        if(grid.empty()) {
+            return 0;
+        }
+
+        int n = grid.size();
+        int m = grid[0].size();
+        int count = 0;
+
+        for(int i = 0; i<n; i++) {
+            for(int j = 0; j<m; j++) {
+                if(grid[i][j] == '1') {
+                    count++;
+                    dfs(i, j, grid);
+                }
+            }
+        }
+        return count;
     }
 };
