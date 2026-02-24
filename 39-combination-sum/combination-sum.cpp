@@ -1,25 +1,25 @@
 class Solution {
 public:
-    void combination(int index, vector<int>& candidates, int target, vector<vector<int>> &ans, vector<int>& temp) {
-        if(index == candidates.size()){
-            if(target == 0) {
-            ans.push_back(temp);
-        }
+    void combination(vector<int>& candidates, int target, int index, vector<vector<int>>&ans, vector<int>&combo) {
+        if(target == 0){
+            ans.push_back(combo);
             return;
         }
-        if(candidates[index] <= target){
-            temp.push_back(candidates[index]);
-            combination(index, candidates, target - candidates[index], ans, temp);
-            temp.pop_back();
-        }
-        combination(index+1, candidates, target, ans, temp);
-    }
 
+        for(int i = index; i<candidates.size(); i++){
+            if(candidates[i] > target){
+                return;
+            }
+            combo.push_back(candidates[i]);
+            combination(candidates, target - candidates[i], i, ans, combo);
+            combo.pop_back();
+        }
+    }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-       vector<vector<int>> ans;
-       vector<int> temp;
-       int index = 0;
-       combination(index, candidates, target, ans, temp);
+       sort(candidates.begin(), candidates.end());
+       vector<vector<int>>ans;
+       vector<int>combo;
+       combination(candidates, target, 0, ans, combo);
        return ans;
     }
 };
