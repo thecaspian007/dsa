@@ -1,20 +1,26 @@
 class Solution {
 public:
-    void permuteRecursive(vector<int> &num, int begin, vector<vector<int>> &result)	{
-		if (begin >= num.size()) {
-		    result.push_back(num);
-		    return;
-		}
-		for (int i = begin; i < num.size(); i++) {
-		    swap(num[begin], num[i]);
-		    permuteRecursive(num, begin + 1, result);
-		    swap(num[begin], num[i]);
-		}
+    void backtrack(vector<int>& nums, vector<bool>& visited, vector<int>& path, vector<vector<int>>& result) {
+    if(path.size() == nums.size()) {
+        result.push_back(path);
+        return;
     }
+    for(int i = 0; i < nums.size(); i++) {
+        if(visited[i])
+            continue;
+        visited[i] = true;
+        path.push_back(nums[i]);
+        backtrack(nums, visited, path, result);
+        path.pop_back();
+        visited[i] = false;
+    }
+}
 
     vector<vector<int>> permute(vector<int>& nums) {
         vector<vector<int>> result;
-	    permuteRecursive(nums, 0, result);
-	    return result;
+        vector<int> path;
+        vector<bool> visited(nums.size(), false);
+        backtrack(nums, visited, path, result);
+        return result;
     }
 };
