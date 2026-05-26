@@ -5,14 +5,19 @@ public:
         if(len == 0){
             return 0;
         }
-        unordered_map<int, int>mp;
+        vector<int>lower(26, 0);
+        vector<int>upper(26, 0);
         int count = 0;
         for(auto i : word){
-            int val = i;
-            mp[i]++;
+            if(i>=97){
+                lower[i-'a'] = 1;
+            }
+            else{
+                upper[i-'A'] = 1;
+            }
         }
-        for(auto i : mp){
-          if(mp.find(i.first + 32) != mp.end()){
+        for(int i = 0; i<26; i++){
+          if(lower[i] && upper[i]){
             count++;
           }
         }
