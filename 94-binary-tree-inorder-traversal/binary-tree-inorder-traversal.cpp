@@ -20,11 +20,11 @@ public:
         inorder(root->right, inOrdered);
     }
     vector<int> inorderTraversal(TreeNode* root) {
-        vector<int>inOrdered;
-        if(root == nullptr){
-            return inOrdered;
-        }
-        inorder(root, inOrdered);
-        return inOrdered;
+        vector<int>ans;
+       if(root == nullptr){
+        return ans;
+       }
+       inorder(root, ans);
+       return ans;
     }
 };
