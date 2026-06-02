@@ -11,25 +11,40 @@
  */
 class Solution {
 public:
-    void inOrder(TreeNode* root, vector<int> &v1)
-    {
-        if(root == NULL)
-        {
-            return;
-        }
-        inOrder(root->left, v1);
-        v1.push_back(root->val);
-        inOrder(root->right, v1);
-
-    }
     bool isValidBST(TreeNode* root) {
-        vector<int> v1;
-        inOrder(root, v1);
-       for(int i=1;i<v1.size();i++){
-            if(v1[i]<=v1[i-1]){
-                return false;
+        if(root == nullptr){
+            return false;
+        }
+        bool ans = true;
+        TreeNode* curr = root;
+        TreeNode* prev = nullptr;
+        while(curr){
+            if(curr->left == nullptr){
+             if(prev && prev->val >= curr->val){
+                ans = false;
+             }
+            prev = curr;
+            curr = curr->right;
+            }
+            else{
+                TreeNode* pred = curr->left;
+                while(pred->right && pred->right != curr){
+                    pred = pred->right;
+                }
+                if(pred->right == nullptr){
+                    pred->right = curr;
+                    curr = curr->left;
+                }
+                else{
+                    pred->right = nullptr;
+                    if(prev && prev->val >= curr->val){
+                        ans = false;
+                    }
+                    prev = curr;
+                    curr = curr->right;
+                }
             }
         }
-        return true;
+        return ans;
     }
 };
