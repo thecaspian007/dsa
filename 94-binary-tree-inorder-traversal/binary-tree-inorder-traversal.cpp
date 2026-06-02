@@ -16,18 +16,28 @@ public:
        if(root == nullptr){
         return ans;
        }
-       stack<TreeNode*> st;
        TreeNode * curr = root;
-       while(curr || !st.empty()){
-        while(curr){
-            st.push(curr);
-            curr = curr->left;
+      while(curr){
+        if(curr->left == nullptr){
+            ans.push_back(curr->val);
+            curr = curr->right;
         }
-        curr = st.top();
-        st.pop();
-        ans.push_back(curr->val);
-        curr = curr->right;
-       }
-       return ans;
+        else{
+            TreeNode* pred = curr->left;
+            while(pred->right && pred->right != curr){
+                pred = pred->right;
+            }
+            if(pred->right == nullptr){
+                pred->right = curr;
+                curr = curr->left;
+            }
+            else{
+                pred->right = nullptr;
+                ans.push_back(curr->val);
+                curr = curr->right;
+            }
+        }
+      }
+      return ans;
     }
 };
