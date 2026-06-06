@@ -11,13 +11,26 @@
  */
 class Solution {
 public:
-    int dfs(TreeNode* node, int path) {
-        if (!node) return 0;
-        path = path * 10 + node->val;
-        if (!node->left && !node->right) return path;
-        return dfs(node->left, path) + dfs(node->right, path);
+    bool isLeaf(TreeNode* root){
+        return !root->left && !root->right;
     }
+
+    int dfs(TreeNode* root, int sum){
+        if(root == nullptr){
+            return 0;
+        }
+        sum = sum*10 + root->val;
+        if(isLeaf(root)){
+            return sum;
+        }
+        return dfs(root->left, sum) + dfs(root->right, sum);
+    }
+
     int sumNumbers(TreeNode* root) {
+        int sum = 0;
+        if(root == nullptr){
+            return sum;
+        }
         return dfs(root, 0);
     }
 };
