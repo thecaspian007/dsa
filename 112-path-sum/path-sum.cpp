@@ -11,13 +11,17 @@
  */
 class Solution {
 public:
+    bool isLeaf(TreeNode* root) {
+        return !root->left && !root->right;
+    }
     bool hasPathSum(TreeNode* root, int targetSum) {
-        if(root==nullptr){
+        if(root == nullptr){
             return false;
         }
-        if(!root->left && !root->right){
-            return root->val == targetSum;
+
+        if (isLeaf(root)) {
+            return targetSum == root->val;
         }
-        return hasPathSum(root->left, targetSum-root->val) || hasPathSum(root->right, targetSum-root->val);
+        return hasPathSum(root->left, targetSum - root->val) || hasPathSum(root->right, targetSum - root->val);
     }
 };
