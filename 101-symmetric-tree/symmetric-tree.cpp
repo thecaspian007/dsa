@@ -11,22 +11,20 @@
  */
 class Solution {
 public:
-    bool isMirror(TreeNode* root1, TreeNode* root2){
-        if(root1 == nullptr && root2 == nullptr) {
+    bool isMirror(TreeNode* leftPt, TreeNode* rightPt){
+        if(leftPt == nullptr && rightPt == nullptr){
             return true;
         }
-        if(root1 == nullptr && root2 != nullptr || root1 != nullptr && root2 == nullptr) { 
+        if(leftPt == nullptr || rightPt == nullptr){
             return false;
         }
-        if(root1 && root2 && root1->val == root2->val) {
-            return isMirror(root1->left, root2->right) && isMirror(root1->right, root2->left);
-        }
-        return false;
+        return leftPt->val == rightPt->val && isMirror(leftPt->left, rightPt->right) && isMirror(leftPt->right, rightPt->left);
     }
+
     bool isSymmetric(TreeNode* root) {
         if(root == nullptr){
             return true;
         }
-        return isMirror(root, root);
+        return isMirror(root->left, root->right);
     }
 };
