@@ -11,40 +11,16 @@
  */
 class Solution {
 public:
-    bool isValidBST(TreeNode* root) {
+    bool validate(TreeNode * root, long long mn, long long mx){
         if(root == nullptr){
+            return true;
+        }
+        if(root->val >= mx || root->val <= mn){
             return false;
         }
-        bool ans = true;
-        TreeNode* curr = root;
-        TreeNode* prev = nullptr;
-        while(curr){
-            if(curr->left == nullptr){
-             if(prev && prev->val >= curr->val){
-                ans = false;
-             }
-            prev = curr;
-            curr = curr->right;
-            }
-            else{
-                TreeNode* pred = curr->left;
-                while(pred->right && pred->right != curr){
-                    pred = pred->right;
-                }
-                if(pred->right == nullptr){
-                    pred->right = curr;
-                    curr = curr->left;
-                }
-                else{
-                    pred->right = nullptr;
-                    if(prev && prev->val >= curr->val){
-                        ans = false;
-                    }
-                    prev = curr;
-                    curr = curr->right;
-                }
-            }
-        }
-        return ans;
+        return validate(root->left, mn, root->val) && validate(root->right, root->val, mx);
+    }
+    bool isValidBST(TreeNode* root) {
+        return validate(root, LLONG_MIN, LLONG_MAX);
     }
 };
