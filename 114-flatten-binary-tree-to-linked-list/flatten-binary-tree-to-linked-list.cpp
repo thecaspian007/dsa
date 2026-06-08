@@ -11,21 +11,14 @@
  */
 class Solution {
 public:
-    void helper(TreeNode* root) {
-        if(root==nullptr) return;
-         
-        TreeNode* tmp = root->right;
-        root->right = root->left;
-        root->left = nullptr;
-        
-        TreeNode* dummy = root;
-        while(dummy->right){
-            dummy = dummy->right;
-        }
-        dummy->right = tmp;
-        helper(root->right);
-    }
+    TreeNode* prevNode = nullptr;
     void flatten(TreeNode* root) {
-        helper(root);
+      if(root==nullptr)
+        return;
+    flatten(root->right);
+    flatten(root->left);
+    root->right = prevNode;
+    root->left = nullptr;
+    prevNode = root;  
     }
 };
