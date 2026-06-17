@@ -21,35 +21,35 @@ public:
 
 class Solution {
 public:
+     unordered_map<Node*, Node*> mp;
+
+    Node* dfs(Node* node)
+    {
+        if(mp.count(node))
+        {
+            return mp[node];
+        }
+
+        Node* clone =
+            new Node(node->val);
+
+        mp[node] = clone;
+
+        for(Node* nei : node->neighbors)
+        {
+            clone->neighbors.push_back(
+                dfs(nei)
+            );
+        }
+
+        return clone;
+    }
+
     Node* cloneGraph(Node* node) {
-        if(!node)
+        if(node == NULL)
         {
-            return node;
+            return NULL;
         }
-
-        queue<Node*>q;
-        unordered_map<Node*, Node*> m;
-        Node* ans = new Node(node->val, {});
-        m[node] = ans;
-        q.push(node);
-
-        while(!q.empty())
-        {
-            Node* curr = q.front();
-            q.pop();
-
-            vector<Node*> neigh = curr->neighbors;
-
-            for(auto x: neigh)
-            {
-                if(m.find(x) == m.end())
-                {
-                    m[x] = new Node(x->val, {});
-                    q.push(x);
-                }
-                m[curr]->neighbors.push_back(m[x]);
-            }
-        }
-        return ans;
+        return dfs(node);
     }
 };
