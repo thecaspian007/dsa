@@ -7,6 +7,7 @@ public:
         for (auto &a : child) a = nullptr;
     }
 };
+
 class Trie {
     TrieNode* root;
 public:
