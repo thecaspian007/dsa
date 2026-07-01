@@ -1,50 +1,28 @@
 class Solution {
 public:
-    bool subsetSum(vector<int>& nums, int val, int n)
+    vector<vector<int>> dp;
+
+    bool solve(int index, int target, vector<int>& nums)
     {
-        vector<vector<bool>> t(n+1, vector<bool>(val+1, false));
-        for(int i = 0; i< n+1; i++)
-        {
-            t[i][0] = true;
-        }
-
-         for(int i = 1; i< n+1; i++)
-        {
-            for(int j = 1; j< val+1; j++)
-            {
-                if(nums[i-1] <= j)
-                {
-                    t[i][j] = t[i-1][j-nums[i-1]] || t[i-1][j];
-                }
-                else
-                {
-                     t[i][j] = t[i-1][j];
-                }
-            }
-        }
-        return t[n][val];
+        if (target == 0)
+            return true;
+        if (index == nums.size())
+            return false;
+        if (dp[index][target] != -1)
+            return dp[index][target];
+        bool skip = solve(index + 1, target, nums);
+        bool take = false;
+        if (nums[index] <= target)
+            take = solve(index + 1, target - nums[index], nums);
+        return dp[index][target] = take || skip;
     }
-   
-    bool canPartition(vector<int>& nums) {
-       int len = nums.size();
-       int sum = 0;
-       if(len == 0)
-       {
-        return false;
-       }
 
-       for(int i = 0; i<len; i++)
-       {
-        sum += nums[i];
-       }
-       
-       if(sum%2 != 0)
-       {
-        return false;
-       }
-       else
-       {
-        return subsetSum(nums, sum/2, len);
-       }
+    bool canPartition(vector<int>& nums) {
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        if (sum % 2)
+            return false;
+        int target = sum / 2;
+        dp.assign(nums.size(), vector<int>(target + 1, -1));
+        return solve(0, target, nums);
     }
 };
