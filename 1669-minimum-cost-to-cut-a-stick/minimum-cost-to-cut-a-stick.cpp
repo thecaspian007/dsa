@@ -6,28 +6,22 @@ public:
         sort(cuts.begin(), cuts.end());
         int m = cuts.size();
         vector<vector<int>> dp(m, vector<int>(m, 0));
-        for (int len = 2; len < m; len++)
+        for(int len = 2; len < m; len++)
         {
-            for (int left = 0;
-                 left + len < m;
-                 left++)
+            for(int i = 0; i + len < m; i++)
             {
-                int right = left + len;
-                dp[left][right] = INT_MAX;
-                for (int k = left + 1;
-                     k < right;
-                     k++)
+                int j = i + len;
+                dp[i][j] = INT_MAX;
+                for(int k = i + 1; k < j; k++)
                 {
-                    dp[left][right] = min(
-                        dp[left][right],
-                        cuts[right] - cuts[left] +
-                        dp[left][k] +
-                        dp[k][right]);
+                    dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j] + cuts[j] - cuts[i]);
                 }
-                if (dp[left][right] == INT_MAX)
-                    dp[left][right] = 0;
+
+                if(dp[i][j] == INT_MAX)
+                    dp[i][j] = 0;
             }
         }
+
         return dp[0][m - 1];
     }
 };
