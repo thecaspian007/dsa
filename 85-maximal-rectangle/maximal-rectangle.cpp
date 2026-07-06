@@ -1,29 +1,51 @@
 class Solution {
 public:
-    int maximalRectangle(vector<vector<char>>& matrix) {
-    if(matrix.empty()) return 0;
-    const int m = matrix.size();
-    const int n = matrix[0].size();
-    int left[n], right[n], height[n];
-    fill_n(left,n,0); fill_n(right,n,n); fill_n(height,n,0);
-    int maxA = 0;
-    for(int i=0; i<m; i++) {
-        int cur_left=0, cur_right=n; 
-        for(int j=0; j<n; j++) { 
-            if(matrix[i][j]=='1') height[j]++; 
-            else height[j]=0;
+    int largestRectangle(vector<int>& heights) {
+        stack<int> st;
+        int maxArea = 0;
+        int n = heights.size();
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() && heights[st.top()] > heights[i]) {
+                int height = heights[st.top()];
+                st.pop();
+                int width;
+                if (st.empty())
+                    width = i;
+                else
+                    width = i - st.top() - 1;
+                maxArea = max(maxArea, height * width);
+            }
+            st.push(i);
         }
-        for(int j=0; j<n; j++) { 
-            if(matrix[i][j]=='1') left[j]=max(left[j],cur_left);
-            else {left[j]=0; cur_left=j+1;}
+        while (!st.empty()) {
+            int height = heights[st.top()];
+            st.pop();
+            int width;
+            if (st.empty())
+                width = n;
+            else
+                width = n - st.top() - 1;
+            maxArea = max(maxArea, height * width);
         }
-        for(int j=n-1; j>=0; j--) {
-            if(matrix[i][j]=='1') right[j]=min(right[j],cur_right);
-            else {right[j]=n; cur_right=j;}    
-        }
-        for(int j=0; j<n; j++)
-            maxA = max(maxA,(right[j]-left[j])*height[j]);
+        return maxArea;
     }
-    return maxA; 
+
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if (matrix.empty())
+            return 0;
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        vector<int> heights(cols, 0);
+        int ans = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] == '1')
+                    heights[j]++;
+                else
+                    heights[j] = 0;
+            }
+            ans = max(ans, largestRectangle(heights));
+        }
+        return ans;
     }
 };
