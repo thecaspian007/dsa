@@ -1,39 +1,43 @@
 class Solution {
 public:
-    vector<int> smallestRange(vector<vector<int>>& nums) {
-        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> minHeap;
-        int curMax = numeric_limits<int>::min();
+    struct Node {
+        int value;
+        int row;   
+        int col; 
 
-        // Initialize the heap with the first element of each list
-        for (int i = 0; i < nums.size(); i++) {
-            minHeap.push({nums[i][0], i, 0});
-            curMax = max(curMax, nums[i][0]);
+        bool operator>(const Node &other) const {
+            return value > other.value;
         }
-        // Track the smallest range
-        vector<int> smallRange = {0, numeric_limits<int>::max()};
+    };
 
-        while (!minHeap.empty()) {
-            // Get the minimum element from the heap
-            vector<int> curr = minHeap.top();
-            minHeap.pop();
-            int curMin = curr[0], listIdx = curr[1], elemIdx = curr[2];
-
-            // Update the smallest range if a better one is found
-            if (curMax - curMin < smallRange[1] - smallRange[0]) {
-                smallRange[0] = curMin;
-                smallRange[1] = curMax;
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+        priority_queue<Node, vector<Node>, greater<Node>> pq;
+        int currentMax = INT_MIN;
+        for (int i = 0; i < nums.size(); i++) {
+            pq.push({nums[i][0], i, 0});
+            currentMax = max(currentMax, nums[i][0]);
+        }
+        int start = 0;
+        int end = INT_MAX;
+        while (pq.size() == nums.size()) {
+            Node curr = pq.top();
+            pq.pop();
+            int currentMin = curr.value;
+            if (currentMax - currentMin < end - start ||
+                (currentMax - currentMin == end - start &&
+                 currentMin < start)) {
+                start = currentMin;
+                end = currentMax;
             }
-
-            // Move to the next element in the same list
-            if (elemIdx + 1 < nums[listIdx].size()) {
-                int nextVal = nums[listIdx][elemIdx + 1];
-                minHeap.push({nextVal, listIdx, elemIdx + 1});
-                curMax = max(curMax, nextVal);
-            } else {
-                // If any list is exhausted, stop
+            if (curr.col + 1 < nums[curr.row].size()) {
+                int nextValue = nums[curr.row][curr.col + 1];
+                pq.push({nextValue, curr.row, curr.col + 1});
+                currentMax = max(currentMax, nextValue);
+            }
+            else {
                 break;
             }
         }
-        return smallRange;
+        return {start, end};
     }
 };
