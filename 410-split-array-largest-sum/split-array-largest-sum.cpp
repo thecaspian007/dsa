@@ -1,34 +1,51 @@
 class Solution {
 public:
-     bool canSplit(vector<int>& nums, int k, long long limit) {
-        long long sum = 0;
-        int parts = 1;
-        for (int num : nums) {
-            if (sum + num <= limit) {
-                sum += num;
-            } else {
-                parts++;
-                sum = num;
+    int maxEle(vector<int>& nums){
+        int maxVal = INT_MIN;
+        for(int i = 0; i < nums.size(); i++){
+            maxVal = max(maxVal, nums[i]);
+        }
+        return maxVal;
+    }
+
+    int sumEle(vector<int>& nums){
+        int sum = 0;
+        for(int i = 0; i < nums.size(); i++){
+            sum += nums[i];
+        }
+        return sum;
+    }
+
+    int calSubarrays(vector<int>& nums, int largestSum){
+        int subarrays = 1;
+        int currSum = 0;
+
+        for(int i = 0; i < nums.size(); i++){
+            if(currSum + nums[i] <= largestSum){
+                currSum += nums[i];
+            }
+            else{
+                subarrays++;
+                currSum = nums[i];
             }
         }
-        return parts <= k;
+        return subarrays;
     }
 
     int splitArray(vector<int>& nums, int k) {
-        long long left = *max_element(nums.begin(), nums.end());
-        long long right = 0;
-        for (int x : nums)
-            right += x;
-        long long ans = right;
-        while (left <= right) {
-            long long mid = left + (right - left) / 2;
-            if (canSplit(nums, k, mid)) {
-                ans = mid;
-                right = mid - 1;
-            } else {
-                left = mid + 1;
+        int low = maxEle(nums);
+        int high = sumEle(nums);
+
+        while(low <= high){
+            int mid = low + (high - low) / 2;
+            int requiredSubarrays = calSubarrays(nums, mid);
+            if(requiredSubarrays <= k){
+                high = mid - 1;
+            }
+            else{
+                low = mid + 1;
             }
         }
-        return (int)ans;
+        return low;
     }
 };
